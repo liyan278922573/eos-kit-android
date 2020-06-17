@@ -172,8 +172,8 @@ class EosKit(
     companion object {
 
         private fun getRpcHost(networkType: NetworkType): String = when (networkType) {
-            NetworkType.MainNet -> "https://eos.greymass.com"
-            NetworkType.TestNet -> "https://peer1-jungle.eosphere.io"
+            NetworkType.MainNet -> "http://47.244.129.130:8001"
+            NetworkType.TestNet -> "http://47.244.129.130:8001"
         }
 
         fun instance(context: Context, account: String, privateKey: String, networkType: NetworkType = NetworkType.MainNet, walletId: String = "unique-id"): EosKit {
