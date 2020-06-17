@@ -180,7 +180,7 @@ class EosKit(
             val database = KitDatabase.create(context, getDatabaseName(networkType, walletId))
             val storage = Storage(database)
 
-            val rpcProvider = EosioJavaRpcProviderImpl(getRpcHost(networkType))
+            val rpcProvider = EosioJavaRpcProviderImpl("http://47.244.129.130:8001")
             val serializationProvider = AbiEosSerializationProviderImpl()
             val abiProvider = ABIProviderImpl(rpcProvider, serializationProvider)
             val signatureProvider = SoftKeySignatureProviderImpl().apply {
