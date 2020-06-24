@@ -2,7 +2,6 @@ package io.horizontalsystems.eoskit
 
 import android.content.Context
 import android.database.sqlite.SQLiteDatabase
-import io.horizontalsystems.eoskit.core.InvalidAccountName
 import io.horizontalsystems.eoskit.core.InvalidPrivateKey
 import io.horizontalsystems.eoskit.core.NotStartedState
 import io.horizontalsystems.eoskit.core.Token
@@ -21,12 +20,21 @@ import io.reactivex.Single
 import io.reactivex.subjects.PublishSubject
 import one.block.eosiojava.error.utilities.EOSFormatterError
 import one.block.eosiojava.implementations.ABIProviderImpl
+import one.block.eosiojava.interfaces.IABIProvider
+import one.block.eosiojava.interfaces.IRPCProvider
+import one.block.eosiojava.interfaces.ISerializationProvider
+import one.block.eosiojava.interfaces.ISignatureProvider
+import one.block.eosiojava.models.rpcProvider.Authorization
+import one.block.eosiojava.session.TransactionSession
 import one.block.eosiojava.utilities.EOSFormatter
+import one.block.eosiojava.utilities.PEMProcessor
 import one.block.eosiojavaabieosserializationprovider.AbiEosSerializationProviderImpl
 import one.block.eosiojavarpcprovider.implementations.EosioJavaRpcProviderImpl
 import one.block.eosiosoftkeysignatureprovider.SoftKeySignatureProviderImpl
+import org.bouncycastle.util.encoders.Hex
 import java.math.BigDecimal
 import java.util.concurrent.TimeUnit
+
 
 class EosKit(
         val account: String,
@@ -88,7 +96,48 @@ class EosKit(
                     }
                 }
     }
+    @Throws
+    fun send2(account:String,token: Token, publicKey: String): Single<String> {
+        return transactionManager
+            .send2(account, token.token, publicKey)
+            .doOnSuccess {
+                Observable.timer(2, TimeUnit.SECONDS).subscribe {
+                    balanceManager.sync(account, token)
+                }
+            }
 
+//        val rpcProvider: IRPCProvider = EosioJavaRpcProviderImpl("http://47.244.129.130:8001/v1/")
+//        val serializationProvider: ISerializationProvider = AbiEosSerializationProviderImpl()
+//        val abiProvider: IABIProvider = ABIProviderImpl(rpcProvider, serializationProvider)
+//        val signatureProvider: ISignatureProvider = SoftKeySignatureProviderImpl()
+//
+//        signatureProvider.importKey("5KhQBE9BtmrS61pWvMwkS65PgeMEDJ8jXUpuj9RUbhozNg5Srxa")
+//
+//        val session = TransactionSession(
+//            serializationProvider,
+//            rpcProvider,
+//            abiProvider,
+//            signatureProvider
+//        )
+//
+//        val processor = session.transactionProcessor
+//
+//        val jsonData = """{
+//"from": "person1",
+//"to": "person2",
+//"quantity": "10.0000 EOS",
+//"memo" : "Something"
+//}"""
+//
+//        val authorizations: MutableList<Authorization> = ArrayList()
+//        authorizations.add(Authorization("myaccount", "active"))
+//        val actions: MutableList<Action> = ArrayList()
+//        actions.add(Action("bacc.token", "transfer", authorizations, jsonData))
+//
+//        processor.prepare(actions)
+//
+//        val pushTransactionResponse = processor.signAndBroadcast()
+    }
     fun transactions(token: Token, fromSequence: Int? = null, limit: Int? = null): Single<List<Transaction>> {
         return actionManager
                 .getActions(account, token, fromSequence, limit)
@@ -165,8 +214,8 @@ class EosKit(
     }
 
     enum class NetworkType(chainId: String) {
-        MainNet("aca376f206b8fc25a6ed44dbdc66547c36c6c33e3a119ffbeaef943642f0e906"), // EOS
-        TestNet("e70aaab8997e1dfce58fbfac80cbbb8fecec7b99cf982a9444273cbc64c41473")  // JUNGLE
+        MainNet("25f43e0eb6d8717c51e0b7a56c1ed2ddd7e3672d53447639832bb97ae536fe92"), // EOS
+        TestNet("25f43e0eb6d8717c51e0b7a56c1ed2ddd7e3672d53447639832bb97ae536fe92")  // JUNGLE
     }
 
     companion object {
@@ -198,7 +247,12 @@ class EosKit(
 
             return eosKit
         }
-
+        fun getKeyData():String
+        {
+            val pemFormattedPrivateKey = "MDECAQEEIFjJPuD5efj0AdOolGUxlte5szjCItDfSLDtWjJio4AroAoGCCqGSM49AwEH".trimIndent()
+            val pemProcessor = PEMProcessor(pemFormattedPrivateKey)
+             return Hex.toHexString(pemProcessor.keyData)
+        }
         fun clear(context: Context, networkType: NetworkType, walletId: String) {
             SQLiteDatabase.deleteDatabase(context.getDatabasePath(getDatabaseName(networkType, walletId)))
         }

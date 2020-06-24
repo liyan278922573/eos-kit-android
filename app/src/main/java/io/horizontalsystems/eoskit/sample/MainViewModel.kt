@@ -40,9 +40,9 @@ class MainViewModel : ViewModel() {
     // Private
 
     private fun init() {
-        eosKit = EosKit.instance(App.instance, "talgattest11", "5JW3RbdpXrVTHwJzNMCpRsaKk5YEqCKykmZPxqT7MrXXsDhp2PY", EosKit.NetworkType.TestNet)
-        adapters.add(EosAdapter(eosKit, "eosio.token", "EOS"))
-        adapters.add(EosAdapter(eosKit, "eosio.token", "JUNGLE"))
+        eosKit = EosKit.instance(App.instance, "liyan1234511", "5KhQBE9BtmrS61pWvMwkS65PgeMEDJ8jXUpuj9RUbhozNg5Srxa", EosKit.NetworkType.MainNet)
+        adapters.add(EosAdapter(eosKit, "bacc", "BAS"))
+//        adapters.add(EosAdapter(eosKit, "bacc", "BAS"))
 
         adapters.forEach { adapter ->
 

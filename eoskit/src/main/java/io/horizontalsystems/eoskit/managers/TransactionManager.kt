@@ -23,7 +23,33 @@ class TransactionManager(
     fun send(account: String, token: String, to: String, quantity: String, memo: String): Single<String> {
         return Single.create { it.onSuccess(process(account, token, to, quantity, memo)) }
     }
+    @Throws
+    fun send2(account: String, token: String, publicKey: String): Single<String> {
+        return Single.create { it.onSuccess(process2(account, token, publicKey)) }
+    }
+    @Throws
+    private fun process2(name: String, token: String, publicKey: String): String {
+        val session = TransactionSession(serializationProvider, rpcProvider, abiProvider, signatureProvider)
+        val processor = session.transactionProcessor
+        var str:String = "vid" + name
+        val reqJson = "{\"creator\":\"liyan1234511\",\"name\":\"ccc\",\"owner\":{\"threshold\":1,\"keys\": [{ \"key\": \"BACC8HLuZDiAp7VrPKsaEturQFh3rxzJReTRuJ6tkF5PrS4FcLJGMW\",\"weight\":1}],\"accounts\":[],\"waits\":[]},\"active\":{\"threshold\":1,\"keys\":[{\"key\":\"BACC8HLuZDiAp7VrPKsaEturQFh3rxzJReTRuJ6tkF5PrS4FcLJGMW\",\"weight\":1}],\"accounts\":[],\"waits\":[]},\"vid\":\"vidccc\"}"
+        val action = Action(token, "newaccount", listOf(Authorization("liyan1234511", "active")), reqJson.toString())
 
+        try {
+            //  Prepare actions with above actions. A actions can be executed with multiple actions.
+            processor.prepare(listOf(action))
+            //  Sign and broadcast the actions.
+            val response = processor.signAndBroadcast()
+            return response.transactionId
+        } catch (e: TransactionSignAndBroadCastError) {
+            val rpcResponseError = ErrorUtils.getBackendError(e)
+            if (rpcResponseError != null) {
+                throw ErrorUtils.getBackendErrorFromResponse(rpcResponseError)
+            }
+        }
+
+        throw Exception()
+    }
     @Throws
     private fun process(account: String, token: String, to: String, quantity: String, memo: String): String {
 

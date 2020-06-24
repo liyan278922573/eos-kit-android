@@ -10,19 +10,24 @@ import android.widget.EditText
 import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProviders
+import io.horizontalsystems.eoskit.EosKit
 import io.horizontalsystems.eoskit.core.exceptions.BackendError
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.schedulers.Schedulers
 import java.math.RoundingMode
+
 
 class SendTransactionFragment : Fragment() {
 
     private lateinit var viewModel: MainViewModel
 
     private lateinit var sendButton: Button
+    private lateinit var btnTest: Button
+    private lateinit var btnSign: Button
     private lateinit var sendAmount: EditText
     private lateinit var sendMemo: EditText
     private lateinit var sendAddress: EditText
+    private lateinit var txtTest: EditText
 
     private var adapter: EosAdapter? = null
 
@@ -45,7 +50,10 @@ class SendTransactionFragment : Fragment() {
         sendAddress = view.findViewById(R.id.sendUsername)
         sendAmount = view.findViewById(R.id.sendAmount)
         sendMemo = view.findViewById(R.id.sendMemo)
+        txtTest = view.findViewById(R.id.txtTest)
         sendButton = view.findViewById(R.id.sendButton)
+        btnTest = view.findViewById(R.id.btnTest)
+        btnSign = view.findViewById(R.id.btnSign)
         sendButton.setOnClickListener {
             when {
                 sendAddress.text.isEmpty() -> sendAddress.error = "Send address cannot be blank"
@@ -53,10 +61,21 @@ class SendTransactionFragment : Fragment() {
                 else -> send()
             }
         }
+        btnTest.setOnClickListener {
+            when {
+
+                else -> Test()
+            }
+        }
+        btnSign.setOnClickListener {
+            when {
+                else -> send2()
+            }
+        }
     }
 
     private fun send() {
-        val tokenPrecision = 9 //EOSDT token precision is 9, EOS precision is 4
+        val tokenPrecision = 4 //EOSDT token precision is 9, EOS precision is 4
         adapter?.let { adapter ->
             val amount = sendAmount.text.toString().toBigDecimal()
             val scaledAmount = amount.setScale(tokenPrecision, RoundingMode.DOWN)
@@ -75,7 +94,29 @@ class SendTransactionFragment : Fragment() {
             sendMemo.text = null
         }
     }
+    private fun send2() {
+        val tokenPrecision = 4 //EOSDT token precision is 9, EOS precision is 4
+        adapter?.let { adapter ->
 
+            adapter.send2("ccc","BACC8HLuZDiAp7VrPKsaEturQFh3rxzJReTRuJ6tkF5PrS4FcLJGMW")
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .doOnError { e -> e.printStackTrace() }
+                .subscribe({
+                    messageSent(null)
+                }, {
+                    messageSent(it)
+                })
+
+            sendAddress.text = null
+            sendAmount.text = null
+            sendMemo.text = null
+        }
+    }
+    private fun Test() {
+        val byte = EosKit.getKeyData()
+        txtTest.setText("")
+    }
     private fun messageSent(sendError: Throwable?) {
         val message = if (sendError != null) {
             if (sendError is BackendError) {

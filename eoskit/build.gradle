@@ -29,19 +29,20 @@ dependencies {
     // EOSIO
     implementation 'one.block:eosiojava:0.1.0'
     implementation 'one.block:eosiojavasoftkeysignatureprovider:0.1.1'
-    implementation 'one.block:eosiojavaandroidabieosserializationprovider:0.1.0'
+//    implementation 'one.block:eosiojavaandroidabieosserializationprovider:0.1.0'
+//    implementation 'com.github.liyan278922573:eosiojavaandroidabieosserializationprovider:5361370'
     implementation 'one.block:eosiojavarpcprovider:0.1.1'
-
     // RxJava
     implementation 'io.reactivex.rxjava2:rxjava:2.2.8'
 
     // Room
     implementation "androidx.room:room-runtime:2.1.0"
+    implementation files('libs\\eosiojavaandroidabieosserializationprovider.jar')
     kapt "androidx.room:room-compiler:2.1.0"
 
     testImplementation 'junit:junit:4.12'
 }
 
-repositories {
-    mavenCentral()
-}
+//repositories {
+//    mavenCentral()
+//}
