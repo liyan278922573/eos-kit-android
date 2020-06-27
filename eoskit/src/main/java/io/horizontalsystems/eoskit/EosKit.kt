@@ -105,38 +105,6 @@ class EosKit(
                     balanceManager.sync(account, token)
                 }
             }
-
-//        val rpcProvider: IRPCProvider = EosioJavaRpcProviderImpl("http://47.244.129.130:8001/v1/")
-//        val serializationProvider: ISerializationProvider = AbiEosSerializationProviderImpl()
-//        val abiProvider: IABIProvider = ABIProviderImpl(rpcProvider, serializationProvider)
-//        val signatureProvider: ISignatureProvider = SoftKeySignatureProviderImpl()
-//
-//        signatureProvider.importKey("5KhQBE9BtmrS61pWvMwkS65PgeMEDJ8jXUpuj9RUbhozNg5Srxa")
-//
-//        val session = TransactionSession(
-//            serializationProvider,
-//            rpcProvider,
-//            abiProvider,
-//            signatureProvider
-//        )
-//
-//        val processor = session.transactionProcessor
-//
-//        val jsonData = """{
-//"from": "person1",
-//"to": "person2",
-//"quantity": "10.0000 EOS",
-//"memo" : "Something"
-//}"""
-//
-//        val authorizations: MutableList<Authorization> = ArrayList()
-//        authorizations.add(Authorization("myaccount", "active"))
-//        val actions: MutableList<Action> = ArrayList()
-//        actions.add(Action("bacc.token", "transfer", authorizations, jsonData))
-//
-//        processor.prepare(actions)
-//
-//        val pushTransactionResponse = processor.signAndBroadcast()
     }
     fun transactions(token: Token, fromSequence: Int? = null, limit: Int? = null): Single<List<Transaction>> {
         return actionManager
