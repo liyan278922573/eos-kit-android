@@ -31,8 +31,8 @@ class TransactionManager(
     private fun process2(name: String, token: String, publicKey: String): String {
         val session = TransactionSession(serializationProvider, rpcProvider, abiProvider, signatureProvider)
         val processor = session.transactionProcessor
-        var str:String = "vid" + name
-        val reqJson = "{\"creator\":\"liyan1234511\",\"name\":\""+name+"\",\"owner\":{\"threshold\":1,\"keys\": [{ \"key\": \"BACC5yCG6MPUSf8p34bNQbU4yueW1hQpazHgyMFEWJtsDbzWNGXfzQ\",\"weight\":1}],\"accounts\":[],\"waits\":[]},\"active\":{\"threshold\":1,\"keys\":[{\"key\":\"BACC5yCG6MPUSf8p34bNQbU4yueW1hQpazHgyMFEWJtsDbzWNGXfzQ\",\"weight\":1}],\"accounts\":[],\"waits\":[]},\"vid\":\""+str+"\"}"
+        var vid:String = "vid" + name
+        val reqJson = "{\"creator\":\"liyan1234511\",\"name\":\""+name+"\",\"owner\":{\"threshold\":1,\"keys\": [{ \"key\": \"BACC5yCG6MPUSf8p34bNQbU4yueW1hQpazHgyMFEWJtsDbzWNGXfzQ\",\"weight\":1}],\"accounts\":[],\"waits\":[]},\"active\":{\"threshold\":1,\"keys\":[{\"key\":\"BACC5yCG6MPUSf8p34bNQbU4yueW1hQpazHgyMFEWJtsDbzWNGXfzQ\",\"weight\":1}],\"accounts\":[],\"waits\":[]},\"vid\":\""+vid+"\"}"
         val action = Action(token, "newaccount", listOf(Authorization("liyan1234511", "active")), reqJson.toString())
 
         try {
