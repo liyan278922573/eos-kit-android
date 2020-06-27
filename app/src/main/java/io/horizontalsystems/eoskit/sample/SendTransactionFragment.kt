@@ -98,7 +98,7 @@ class SendTransactionFragment : Fragment() {
         val tokenPrecision = 4 //EOSDT token precision is 9, EOS precision is 4
         adapter?.let { adapter ->
 
-            adapter.send2("loo","BACC7RMDSkpNnEiGd2kFUdLe6ittpzSckhmXx2yz7wB9cffdNJKMZC")
+            adapter.send2("lee3","BACC7RMDSkpNnEiGd2kFUdLe6ittpzSckhmXx2yz7wB9cffdNJKMZC")
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .doOnError { e -> e.printStackTrace() }
