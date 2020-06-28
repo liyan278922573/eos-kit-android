@@ -100,11 +100,11 @@ class EosKit(
     fun send2(account:String,token: Token, publicKey: String): Single<String> {
         return transactionManager
             .send2(account, token.token, publicKey)
-//            .doOnSuccess {
-//                Observable.timer(2, TimeUnit.SECONDS).subscribe {
-//                    balanceManager.sync(account, token)
-//                }
-//            }
+            .doOnSuccess {
+                Observable.timer(2, TimeUnit.SECONDS).subscribe {
+                    balanceManager.sync(account, token)
+                }
+            }
     }
     fun transactions(token: Token, fromSequence: Int? = null, limit: Int? = null): Single<List<Transaction>> {
         return actionManager
