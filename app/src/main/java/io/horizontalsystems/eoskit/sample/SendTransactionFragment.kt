@@ -98,9 +98,10 @@ class SendTransactionFragment : Fragment() {
         val tokenPrecision = 4 //EOSDT token precision is 9, EOS precision is 4
         adapter?.let { adapter ->
 
-            adapter.send2("lee3","BACC7RMDSkpNnEiGd2kFUdLe6ittpzSckhmXx2yz7wB9cffdNJKMZC")
+            adapter.send2("errrt","BACC7RMDSkpNnEiGd2kFUdLe6ittpzSckhmXx2yz7wB9cffdNJKMZC")
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
+                .doOnSuccess { onSuccess() }
                 .doOnError { e -> e.printStackTrace() }
                 .subscribe({
                     messageSent(null)
@@ -117,6 +118,13 @@ class SendTransactionFragment : Fragment() {
         val byte = EosKit.getKeyData()
         txtTest.setText("")
     }
+    private fun onSuccess(){
+        val byte = EosKit.getKeyData()
+    }
+    private fun afterSuccess(){
+        val byte = EosKit.getKeyData()
+    }
+
     private fun messageSent(sendError: Throwable?) {
         val message = if (sendError != null) {
             if (sendError is BackendError) {
