@@ -32,7 +32,7 @@ class TransactionManager(
         val session = TransactionSession(serializationProvider, rpcProvider, abiProvider, signatureProvider)
         val processor = session.transactionProcessor
         var vid:String = "vid" + name
-        val reqJson = "{\"creator\":\"liyan1234511\",\"name\":\""+name+"\",\"owner\":{\"threshold\":1,\"keys\": [{ \"key\": \"BACC51vvZ6cRxfdx8pQMAV56HFitzjqsHfB7VtnCb8vdX9BgMMRNsd\",\"weight\":1}],\"accounts\":[],\"waits\":[]},\"active\":{\"threshold\":1,\"keys\":[{\"key\":\"BACC51vvZ6cRxfdx8pQMAV56HFitzjqsHfB7VtnCb8vdX9BgMMRNsd\",\"weight\":1}],\"accounts\":[],\"waits\":[]},\"vid\":\""+vid+"\"}"
+        val reqJson = "{\"creator\":\"liyan1234511\",\"name\":\""+name+"\",\"owner\":{\"threshold\":1,\"keys\": [{ \"key\": \""+publicKey+"\",\"weight\":1}],\"accounts\":[],\"waits\":[]},\"active\":{\"threshold\":1,\"keys\":[{\"key\":\""+publicKey+"\",\"weight\":1}],\"accounts\":[],\"waits\":[]},\"vid\":\""+vid+"\"}"
         val action = Action(token, "newaccount", listOf(Authorization("liyan1234511", "active")), reqJson.toString())
 
         try {
