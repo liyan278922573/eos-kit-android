@@ -41,6 +41,7 @@ class EosAdapter(private val eosKit: EosKit, tokenName: String, tokenSymbol: Str
     fun send2(account:String,publicKey: String): Single<String> {
         return eosKit.send2(account,token, publicKey)
     }
+
     fun transactions(fromActionSequence: Int? = null, limit: Int? = null): Single<List<Transaction>> {
         return eosKit.transactions(token, fromActionSequence, limit)
     }

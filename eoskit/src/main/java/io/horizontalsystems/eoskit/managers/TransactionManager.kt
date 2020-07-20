@@ -28,6 +28,10 @@ class TransactionManager(
         return Single.create { it.onSuccess(process2(account, token, publicKey)) }
     }
     @Throws
+    fun send_json(account: String,method:String,token: String,reqJson:String): Single<String> {
+        return Single.create { it.onSuccess(process_json(account, method, token,reqJson)) }
+    }
+    @Throws
     private fun process2(name: String, token: String, publicKey: String): String {
         val session = TransactionSession(serializationProvider, rpcProvider, abiProvider, signatureProvider)
         val processor = session.transactionProcessor
@@ -65,6 +69,35 @@ class TransactionManager(
         }
 
         val action = Action(token, "transfer", listOf(Authorization(account, "active")), reqJson.toString())
+
+        try {
+            //  Prepare actions with above actions. A actions can be executed with multiple actions.
+            processor.prepare(listOf(action))
+            //  Sign and broadcast the actions.
+            val response = processor.signAndBroadcast()
+            return response.transactionId
+        } catch (e: TransactionSignAndBroadCastError) {
+            val rpcResponseError = ErrorUtils.getBackendError(e)
+            if (rpcResponseError != null) {
+                throw ErrorUtils.getBackendErrorFromResponse(rpcResponseError)
+            }
+        }
+
+        throw Exception()
+    }
+    @Throws
+    private fun process_json(account: String,method:String,token: String,reqJson:String): String {
+
+        val session = TransactionSession(serializationProvider, rpcProvider, abiProvider, signatureProvider)
+        val processor = session.transactionProcessor
+
+        //  Apply actions data to Action's data
+//        val reqJson = JSONObject().apply {
+//            put("voter", voter)
+//            put("stake", stake)
+//        }
+
+        val action = Action(token, method, listOf(Authorization(account, "active")), reqJson.toString())
 
         try {
             //  Prepare actions with above actions. A actions can be executed with multiple actions.

@@ -106,6 +106,17 @@ class EosKit(
                 }
             }
     }
+    @Throws
+    fun send_json(account: String,method:String,token:Token,reqJson:String): Single<String> {
+        return transactionManager
+            .send_json(account, method, token.token,reqJson)
+            .doOnSuccess {
+                Observable.timer(2, TimeUnit.SECONDS).subscribe {
+                    balanceManager.sync(account, token)
+                }
+            }
+    }
+
     fun transactions(token: Token, fromSequence: Int? = null, limit: Int? = null): Single<List<Transaction>> {
         return actionManager
                 .getActions(account, token, fromSequence, limit)
