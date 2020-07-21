@@ -104,6 +104,7 @@ class EosKit(
                 Observable.timer(2, TimeUnit.SECONDS).subscribe {
                     balanceManager.sync(account, token)
                 }
+                
             }
     }
     @Throws
