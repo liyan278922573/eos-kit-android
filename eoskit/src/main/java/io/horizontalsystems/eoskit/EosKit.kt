@@ -109,7 +109,7 @@ class EosKit(
     @Throws
     fun send_json(account: String,method:String,token:Token,reqJson:String): Single<String> {
         return transactionManager
-            .send_json(account, method, token.token,reqJson)
+            .send_json(account, method, "bacc",reqJson)
             .doOnSuccess {
                 Observable.timer(2, TimeUnit.SECONDS).subscribe {
                     balanceManager.sync(account, token)
