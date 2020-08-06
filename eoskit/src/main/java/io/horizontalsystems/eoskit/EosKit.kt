@@ -201,15 +201,15 @@ class EosKit(
     companion object {
 
         private fun getRpcHost(networkType: NetworkType): String = when (networkType) {
-            NetworkType.MainNet -> "http://101.32.42.213:8001"
-            NetworkType.TestNet -> "http://101.32.42.213:8001"
+            NetworkType.MainNet -> "http://47.89.25.218:8001"
+            NetworkType.TestNet -> "http://47.89.25.218:8001"
         }
 
         fun instance(context: Context, account: String, privateKey: String, networkType: NetworkType = NetworkType.MainNet, walletId: String = "unique-id"): EosKit {
             val database = KitDatabase.create(context, getDatabaseName(networkType, walletId))
             val storage = Storage(database)
 
-            val rpcProvider = EosioJavaRpcProviderImpl("http://101.32.42.213:8001")
+            val rpcProvider = EosioJavaRpcProviderImpl("http://47.89.25.218:8001")
             val serializationProvider = AbiEosSerializationProviderImpl()
             val abiProvider = ABIProviderImpl(rpcProvider, serializationProvider)
             val signatureProvider = SoftKeySignatureProviderImpl().apply {
