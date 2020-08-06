@@ -40,8 +40,8 @@ class MainViewModel : ViewModel() {
     // Private
 
     private fun init() {
-        eosKit = EosKit.instance(App.instance, "liyan1234511", "5KhQBE9BtmrS61pWvMwkS65PgeMEDJ8jXUpuj9RUbhozNg5Srxa", EosKit.NetworkType.MainNet)
-        adapters.add(EosAdapter(eosKit, "bacc", "BAS"))
+        eosKit = EosKit.instance(App.instance, "basggg", "5JNVnL5xW5ZoVWYQX39wyFHfe4Vqaq92qjXNkWy974DS49nxw36", EosKit.NetworkType.MainNet)
+        adapters.add(EosAdapter(eosKit, "bacc.token", "BAS"))
 //        adapters.add(EosAdapter(eosKit, "bacc", "BAS"))
 
         adapters.forEach { adapter ->
