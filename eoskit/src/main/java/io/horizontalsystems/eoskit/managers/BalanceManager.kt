@@ -73,7 +73,9 @@ class BalanceManager(private val storage: IStorage, private val rpcProvider: Eos
 
         for (i in 0 until jsonArray.length()) {
             val element = jsonArray.getString(i).split(" ")
-            balances.add(Balance(element[1], BigDecimal(element[0]), token.token))
+            if(element[1] == token.symbol)
+                balances.add(Balance(element[1], BigDecimal(element[0]), token.token))
+//            balances.add(Balance(element[1], BigDecimal(element[0]), token.token))
         }
 
         if (balances.isEmpty()) {
