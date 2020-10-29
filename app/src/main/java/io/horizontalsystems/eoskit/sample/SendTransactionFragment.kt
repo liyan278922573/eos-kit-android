@@ -28,6 +28,7 @@ class SendTransactionFragment : Fragment() {
     private lateinit var sendMemo: EditText
     private lateinit var sendAddress: EditText
     private lateinit var txtTest: EditText
+    private lateinit var map: Map<Any?, Any?>
 
     private var adapter: EosAdapter? = null
 
@@ -115,8 +116,22 @@ class SendTransactionFragment : Fragment() {
         }
     }
     private fun Test() {
-        val byte = EosKit.getKeyData()
-        txtTest.setText("")
+        adapter?.let { adapter ->
+            adapter.send_action("itestio2", "addbaccdraw", "{\"userid\":\"itestio2\",\"baccuserid\":\"itest123\",\"drawvalue\":\"1.0000 ENO\",\"charge\":\"0.0001 BAS\"}")
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .doOnError { e -> e.printStackTrace() }
+                .subscribe({
+
+                    messageSent(null)
+                }, {
+                    messageSent(it)
+                })
+
+            sendAddress.text = null
+            sendAmount.text = null
+            sendMemo.text = null
+        }
     }
     private fun onSuccess(){
 
@@ -131,14 +146,7 @@ class SendTransactionFragment : Fragment() {
                 sendError.localizedMessage
             }
         } else {
-            " Successfully sent!"
-        }
-
-        try {
-            Toast.makeText(context, message, Toast.LENGTH_LONG).show()
-        } catch (e: Exception) {
-            e.printStackTrace()
-            println(e.message)
+            var ss = map
         }
     }
 

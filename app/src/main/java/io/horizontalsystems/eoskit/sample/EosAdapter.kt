@@ -1,6 +1,7 @@
 package io.horizontalsystems.eoskit.sample
 
 import io.horizontalsystems.eoskit.EosKit
+import io.horizontalsystems.eoskit.core.Token
 import io.horizontalsystems.eoskit.models.Transaction
 import io.reactivex.Flowable
 import io.reactivex.Single
@@ -41,7 +42,9 @@ class EosAdapter(private val eosKit: EosKit, tokenName: String, tokenSymbol: Str
     fun send2(account:String,publicKey: String): Single<String> {
         return eosKit.send2(account,token, publicKey)
     }
-
+    fun send_action(account: String, method:String, reqJson:String): Single<MutableMap<Any?, Any?>> {
+        return eosKit.send_action(account,method,token, reqJson)
+    }
     fun transactions(fromActionSequence: Int? = null, limit: Int? = null): Single<List<Transaction>> {
         return eosKit.transactions(token, fromActionSequence, limit)
     }
